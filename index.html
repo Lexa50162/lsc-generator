@@ -4,11 +4,30 @@
     <meta charset="UTF-8">
     <title>LSC GENERATOR</title>
     <style>
-        body { background-color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-x: hidden; }
-        #title { font-size: 24px; margin-bottom: 20px; }
+        body { 
+            background-color: white; 
+            font-family: sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px; 
+            overflow-x: hidden; 
+            margin: 0; 
+            min-height: 100vh;
+        }
+        #title { font-size: 24px; margin-bottom: 20px; min-height: 30px; }
         #container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; width: 80%; z-index: 1; }
-        .star { position: absolute; color: black; font-size: 20px; pointer-events: none; animation: fall 0.8s linear forwards; }
+        .star { 
+            position: fixed; 
+            color: black; 
+            font-size: 20px; 
+            pointer-events: none; 
+            top: -50px;
+            animation: fall 0.8s linear forwards; 
+            z-index: 0; 
+        }
         @keyframes fall { from { top: -50px; opacity: 1; } to { top: 100vh; opacity: 0; } }
+        input { padding: 8px; width: 60px; }
     </style>
 </head>
 <body>
@@ -22,7 +41,6 @@
     <div id="container"></div>
 
     <script>
-        // Title typewriter logic
         const titleEl = document.getElementById('title');
         const text = "Hello welcome to the 4 letter gen...";
         let i = 0;
@@ -37,10 +55,10 @@
         }
         typeTitle();
 
-        // High-speed stars
         setInterval(() => {
             const star = document.createElement('div');
-            star.innerHTML = '★'; star.className = 'star';
+            star.innerHTML = '★'; 
+            star.className = 'star';
             star.style.left = Math.random() * 100 + 'vw';
             document.body.appendChild(star);
             setTimeout(() => star.remove(), 800);
@@ -50,9 +68,9 @@
             const count = Math.min(document.getElementById('numInput').value, 500);
             const container = document.getElementById('container');
             const status = document.getElementById('status');
+            container.innerHTML = '';
             status.innerText = "Generating...";
             
-            // 2 seconds total for the entire batch
             const delay = 2000 / (count * 4);
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
