@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LSC GENERATOR</title>
+    <style>
+        body { background-color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-x: hidden; }
+        #title { font-size: 24px; margin-bottom: 20px; }
+        #container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; width: 80%; z-index: 1; }
+        .star { position: absolute; color: black; font-size: 20px; pointer-events: none; animation: fall 0.8s linear forwards; }
+        @keyframes fall { from { top: -50px; opacity: 1; } to { top: 100vh; opacity: 0; } }
+    </style>
+</head>
+<body>
+    <h1 id="title"></h1>
+    <div>
+        <input type="number" id="numInput" min="1" max="500" value="20">
+        <button onclick="startProcess()">GENERATE</button>
+        <button onclick="resetData()">RESET</button>
+    </div>
+    <div id="status"></div>
+    <div id="container"></div>
+
+    <script>
+        // Title typewriter logic
+        const titleEl = document.getElementById('title');
+        const text = "Hello welcome to the 4 letter gen...";
+        let i = 0;
+        function typeTitle() {
+            if (i < text.length) {
+                titleEl.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeTitle, 150);
+            } else {
+                setTimeout(() => { titleEl.innerText = "LSC GENERATOR"; }, 3000);
+            }
+        }
+        typeTitle();
+
+        // High-speed stars
+        setInterval(() => {
+            const star = document.createElement('div');
+            star.innerHTML = '★'; star.className = 'star';
+            star.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(star);
+            setTimeout(() => star.remove(), 800);
+        }, 100);
+
+        async function startProcess() {
+            const count = Math.min(document.getElementById('numInput').value, 500);
+            const container = document.getElementById('container');
+            const status = document.getElementById('status');
+            status.innerText = "Generating...";
+            
+            // 2 seconds total for the entire batch
+            const delay = 2000 / (count * 4);
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+            for (let j = 0; j < count; j++) {
+                const div = document.createElement('div');
+                container.appendChild(div);
+                for (let k = 0; k < 4; k++) {
+                    div.innerText += chars.charAt(Math.floor(Math.random() * chars.length));
+                    await new Promise(r => setTimeout(r, delay));
+                }
+                div.innerText += " ";
+            }
+            status.innerText = "Complete.";
+        }
+
+        function resetData() {
+            document.getElementById('status').innerText = "Resetting...";
+            setTimeout(() => {
+                document.getElementById('container').innerHTML = '';
+                document.getElementById('status').innerText = '';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
